@@ -36,8 +36,7 @@
 <!-- ZUI 标准版压缩后的 JavaScript 文件 -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.8.1/js/zui.min.js"></script>
 <body>
-<div class="container">
-    <h1 class="systitle">图书管理系统</h1>
+<div>
 
 <div class="adduserclass">
     <div class="inputclass">

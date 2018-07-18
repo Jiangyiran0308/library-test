@@ -1,10 +1,7 @@
 package com.web.Controller;
 
 import com.web.Model.Libuser;
-import com.web.Service.SimpleBookService;
-import com.web.Service.SimpleDataService;
-import com.web.Service.SimpleRelationService;
-import com.web.Service.SimpleUserService;
+import com.web.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,6 +29,11 @@ public class LibController {
     private SimpleBookService simpleBookService ;
     @Autowired
     private SimpleRelationService simpleRelationService ;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index(HttpServletRequest request ,HttpServletResponse response){
+        return "index";
+    }
 
     @RequestMapping(value = "/Library", method = RequestMethod.GET)
     public String printHello(HttpServletRequest request ,HttpServletResponse response) {

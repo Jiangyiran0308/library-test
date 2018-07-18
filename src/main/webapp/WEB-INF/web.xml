@@ -21,6 +21,7 @@
   </filter-mapping>
   <!-- log4j2-end -->
 
+
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/applicationContext.xml</param-value>
@@ -37,6 +38,8 @@
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+
+
 
   <filter>
     <filter-name>encodingFilter</filter-name>
