@@ -59,18 +59,12 @@
 <script>
     function choose0() {
         document.getElementById("menu").src = "./Library" ;
-        $("li").removeClass("active");
-        $("li:first").addClass("active");
     }
     function choose1() {
         document.getElementById("menu").src = "./AllUser";
-        $("li").removeClass("active");
-        $("li:first").addClass("active");
     }
     function choose2() {
         document.getElementById("menu").src = "./AllBook";
-        $("li").removeClass("active");
-        $("li:first").addClass("active");
     }
     function choose3() {
         document.getElementById("menu").src = "./AllRelation"
