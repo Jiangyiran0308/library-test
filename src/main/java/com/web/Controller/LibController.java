@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse ;
-import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @Author: Jiang
@@ -30,8 +31,11 @@ public class LibController {
     @Autowired
     private SimpleRelationService simpleRelationService ;
 
+    static Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(HttpServletRequest request ,HttpServletResponse response){
+        logger.info("Welcome!!!");
         return "index";
     }
 
