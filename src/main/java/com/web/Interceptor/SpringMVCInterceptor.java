@@ -6,6 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -29,7 +30,6 @@ public class SpringMVCInterceptor implements HandlerInterceptor {
         long begin_time = System.nanoTime();
         request.setAttribute("begin_time", begin_time);
         return true;
-
     }
 
     /**
@@ -59,7 +59,7 @@ public class SpringMVCInterceptor implements HandlerInterceptor {
         long interval = System.nanoTime() - begin_time;
         interval = interval/1000000 ;
         String uri = request.getRequestURI();
-        System.out.println("===============  "+uri+", "+interval + "ms  ==============");
-
+        Date now = new Date() ;
+        System.out.println(String.valueOf(now)+"===============  "+uri+", "+interval + "ms  ==============");
     }
 }
