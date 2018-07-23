@@ -6,11 +6,22 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>图书管理系统</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <[endif]-->
     <style>
         .menu{
             width: 15%;
@@ -20,7 +31,7 @@
         .menu2{
             height: 7%;
             width: 100%;
-            color: #1176FF;
+            color: #2A5FAB;
             font-size: 28px;
             font-family: 微软雅黑;
             font-weight: bold;
@@ -34,30 +45,33 @@
 
     </style>
 
-<!-- ZUI 标准版压缩后的 CSS 文件 -->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/zui/1.8.1/css/zui.min.css">
-<!-- ZUI Javascript 依赖 jQuery -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.8.1/lib/jquery/jquery.js"></script>
-<!-- ZUI 标准版压缩后的 JavaScript 文件 -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.8.1/js/zui.min.js"></script>
-</head>
+    </head>
 <body>
 <div>
     <div class="menu" >
-        <ul class="nav nav-primary nav-stacked">
-            <li class="active"><a onclick="choose0()">首页</a></li>
-            <li><a onclick="choose1()">查询用户 </a></li>
-            <li><a onclick="choose2()">查询书籍 </a></li>
-            <li><a onclick="choose3()">查询借书关系</a></li>
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active" data-toggle="tab"><a onclick="choose0()">首页</a></li>
+            <li role="presentation" data-toggle="tab"><a onclick="choose1()">查询用户 </a></li>
+            <li role="presentation" data-toggle="tab"><a onclick="choose2()">查询书籍 </a></li>
+            <li role="presentation" data-toggle="tab"><a onclick="choose3()">查询借书关系</a></li>
         </ul>
     </div>
     <div class="content">
         <div class="menu2">
-            图书管理系统
+                   系统
         </div>
         <iframe id="menu" width="95%" height="93%" frameborder="0" src="./Library"></iframe>
     </div>
 </div>
+
+
+
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <script>
     function choose0() {
         document.getElementById("menu").src = "./Library" ;
