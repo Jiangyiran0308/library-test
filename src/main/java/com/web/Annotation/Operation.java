@@ -12,8 +12,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-public @interface Intercept {
-    String desc() ;
-    String author();
-    int age() default 18 ;
+public @interface Operation {
+    boolean value() default true;
 }

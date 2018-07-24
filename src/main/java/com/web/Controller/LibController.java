@@ -1,13 +1,12 @@
 package com.web.Controller;
 
-import com.web.Model.Libuser;
+import com.web.Annotation.Operation;
 import com.web.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse ;
 import org.apache.logging.log4j.LogManager;
@@ -39,6 +38,7 @@ public class LibController {
         return "index";
     }
 
+
     @RequestMapping(value = "/Library", method = RequestMethod.GET)
     public String printHello(HttpServletRequest request ,HttpServletResponse response) {
         simpleUserService.add(request);
@@ -47,6 +47,7 @@ public class LibController {
         return "home";
     }
 
+    @Operation
     @RequestMapping(value = "/AllUser", method = RequestMethod.GET)
     public String searchAllUser(HttpServletRequest request,HttpServletResponse response){
         simpleUserService.delete(request);
@@ -57,6 +58,7 @@ public class LibController {
     }
 
     @RequestMapping(value = "/AllBook", method = RequestMethod.GET)
+    @Operation
     public String searchAllBook(HttpServletRequest request,HttpServletResponse response){
         simpleBookService.delete(request);
         simpleBookService.update(request);
@@ -65,6 +67,7 @@ public class LibController {
         return "allbook";
     }
 
+    @Operation
     @RequestMapping(value = "/AllRelation", method = RequestMethod.GET)
     public String searchAllRelation(HttpServletRequest request,HttpServletResponse response){
         simpleRelationService.delete(request);

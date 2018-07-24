@@ -23,11 +23,11 @@
     <!-- 开启注解 -->
     <mvc:annotation-driven/>
 
-    <!-- 自定义AOP -->
+    <!-- 自定义AOP ->
     <aop:aspectj-autoproxy proxy-target-class="true">
         <aop:include name="serviceAspect" />
     </aop:aspectj-autoproxy>
-    <bean id = "serviceAspect" class="com.thc.tenantcenter.aspect.LogAspect"></bean>
+    <bean id = "serviceAspect" class="com.thc.tenantcenter.aspect.LogAspect"></bean-->
 
     <!--ViewResolver 视图解析器-->
     <!--用于支持Servlet、JSP视图解析-->

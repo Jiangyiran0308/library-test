@@ -1,5 +1,7 @@
 package com.web.Interceptor;
 
+import com.web.Annotation.Operation;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,7 +29,13 @@ public class SpringMVCInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
-        long begin_time = System.nanoTime();
+
+        HandlerMethod methodHandler=(HandlerMethod) handler;
+        Operation a=methodHandler.getMethodAnnotation(Operation.class);
+        long begin_time = -1 ;
+        if(a != null && a.value()) {
+            begin_time = System.nanoTime();
+        }
         request.setAttribute("begin_time", begin_time);
         return true;
     }
@@ -54,11 +62,13 @@ public class SpringMVCInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request,
                                 HttpServletResponse response, Object handler, Exception ex)
             throws Exception {
-        long begin_time = (Long) request.getAttribute("begin_time");
-        long interval = System.nanoTime() - begin_time;
-        interval = interval/1000000 ;
-        String uri = request.getRequestURI();
-        Date now = new Date() ;
-        System.out.println(String.valueOf(now)+"===============  "+uri+", "+interval + "ms  ==============");
+        long begin_time =  (Long)request.getAttribute("begin_time");
+        if(begin_time != -1) {
+            long interval = System.nanoTime() - begin_time;
+            interval = interval / 1000000;
+            String uri = request.getRequestURI();
+            Date now = new Date();
+            System.out.println(String.valueOf(now) + "===============  " + uri + ", " + interval + "ms  ==============");
+        }
     }
 }
