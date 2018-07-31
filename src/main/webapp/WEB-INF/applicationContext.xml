@@ -9,4 +9,31 @@
     <context:component-scan base-package="com.web.Model" />
     <context:component-scan base-package="com.web.Service.ServiceInterfaces" />
 
+    <!-- 配置定时任务 -->
+    <!--任务类-->
+    <bean id="job_task" class="com.web.Controller.TaskController">
+
+    </bean>
+    <!--jobs list配置-->
+    <bean id="jobtask_run" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="job_task"/>
+        <property name="targetMethod" value="run"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <!--触发器配置-->
+    <bean id="runTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean" >
+        <property name="jobDetail" ref="jobtask_run"/>
+        <property name="cronExpression">
+            <value>0/10 * * * * ?</value>
+        </property>
+    </bean>
+    <!--triggers factory reference配置-->
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="runTrigger"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>
