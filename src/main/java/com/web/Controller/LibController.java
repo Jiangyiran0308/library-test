@@ -38,6 +38,10 @@ public class LibController {
         return "index";
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(HttpServletRequest request ,HttpServletResponse response){
+        return "login" ;
+    }
 
     @RequestMapping(value = "/Library", method = RequestMethod.GET)
     public String printHello(HttpServletRequest request ,HttpServletResponse response) {
