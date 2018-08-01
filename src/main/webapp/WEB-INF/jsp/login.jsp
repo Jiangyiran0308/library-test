@@ -29,9 +29,13 @@
 </head>
 <body>
 <div>
-    <div class="loginbackground">
+    <div >
         <div>
-
+            <form method="get">
+                <input type="text" name = "admin">
+                <input type="text" name="password">
+                <input type="submit" value="登录">
+            </form>
         </div>
     </div>
 </div>

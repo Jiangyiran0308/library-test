@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.util.Map" %><%--
   Created by IntelliJ IDEA.
   User: Jiang
   Date: 2018/7/18
@@ -6,6 +6,23 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    HttpSession session1 = request.getSession() ;
+    String name = null;
+    if(session1 != null) {
+        Map<String, String> account = (Map) session1.getAttribute("account");
+        if(account != null) {
+            for (String key : account.keySet())
+                name = key;
+        }
+        else
+            name = "无";
+    }else{
+        response.encodeRedirectURL("/login") ;
+    }
+
+
+%>
 
 <html>
 <head>
@@ -52,7 +69,11 @@
     </div>
     <div class="content">
         <div class="menu2">
-                   系统
+        系统
+            <div style="float: right">
+                <span style="font-size: 18px;text-align: left"><%=name%></span>
+                <a href="/?auitAccount = account" style="color: #FFFFFF;background-color: #2A5FAB" onclick="quitAccount()">退出</a>
+            </div>
         </div>
         <iframe id="menu" width="95%" height="93%" frameborder="0" src="./Library"></iframe>
     </div>
@@ -79,6 +100,7 @@
     function choose3() {
         document.getElementById("menu").src = "./AllRelation"
     }
+
 
 </script>
 

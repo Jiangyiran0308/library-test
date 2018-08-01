@@ -15,7 +15,7 @@ import java.util.Date;
 public class TaskController {
 
     public void run (){
-        System.out.println("**********"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"*********");
+        //System.out.println("**********"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"*********");
     }
 
 }

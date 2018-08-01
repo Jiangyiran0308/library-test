@@ -7,10 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse ;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 /**
  * @Author: Jiang
@@ -29,17 +32,20 @@ public class LibController {
     private SimpleBookService simpleBookService ;
     @Autowired
     private SimpleRelationService simpleRelationService ;
+    @Autowired
+    private SimpleAccountService simpleAccountService;
 
     static Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(HttpServletRequest request ,HttpServletResponse response){
-        logger.info("Welcome!!!");
+    public String index(HttpServletRequest request ,HttpServletResponse response) throws IOException, ServletException {
+        simpleAccountService.quitAccount(request,response);
         return "index";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(HttpServletRequest request ,HttpServletResponse response){
+    public String login(HttpServletRequest request ,HttpServletResponse response) throws ServletException, IOException {
+        simpleAccountService.selectAccount(request,response) ;
         return "login" ;
     }
 
