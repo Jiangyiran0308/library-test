@@ -1,6 +1,7 @@
 package com.web;
 
-import com.web.Dao.SimpleAccountDao;
+import com.web.Dao.AccountDao;
+import com.web.Dao.DBCPUtil;
 import com.web.Model.Account;
 
 import java.io.FileInputStream;
@@ -18,7 +19,7 @@ import java.util.Properties;
  */
 public class test {
     public static void main (String []arg ){
-   /*     try {
+       /* try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
         }
         catch(ClassNotFoundException ex) {
@@ -28,7 +29,7 @@ public class test {
 
         try {
             Properties pro = new Properties();
-            FileInputStream input = new FileInputStream("F:\\My Document\\Java_study\\librarytest\\src\\main\\resources\\properties\\jdbc.properties");
+            FileInputStream input = new FileInputStream("src/main/resources/properties/jdbc.properties");
             pro.load(input);
             input.close();
 
@@ -60,11 +61,10 @@ public class test {
             System.exit(1);
         }*/
 
-        SimpleAccountDao simpleAccountDao = new SimpleAccountDao();
-
         String name = "admin";
         String pass = "123456" ;
-        Account account = simpleAccountDao.getAccountByName(name,pass);
+
+        Account account = AccountDao.selectAccount(name, pass);
         if(account != null){
             System.out.println(account.getId());
             System.out.println(account.getName());
