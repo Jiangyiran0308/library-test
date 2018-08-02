@@ -23,18 +23,19 @@ public class SessionFilter extends OncePerRequestFilter {
         System.out.println("====测试Filter功能====拦截用户登陆====");
         String strUri = request.getRequestURI() ;
 
-        if(strUri.indexOf("/login") >= 0)
-            return ;
-        HttpSession session = request.getSession() ;
-        Map account = (Map)session.getAttribute("account") ;
-        if(account == null ) {
-            System.out.println(String.valueOf(account));
-            request.getRequestDispatcher("/login").forward(request, response);
+        if(!strUri.equals("/login")) {
+            HttpSession session = request.getSession();
+            System.out.println(session.getId());
+            Map account = (Map) session.getAttribute("account");
+            if (account == null) {
+                System.out.println(String.valueOf(account));
+                response.sendRedirect("/login");
+            } else {
+                System.out.println(strUri);
+                filterChain.doFilter(request, response);
+                return;
+            }
         }
-        else {
-            System.out.println(strUri);
-        }
-
-
+        filterChain.doFilter(request, response);
     }
 }

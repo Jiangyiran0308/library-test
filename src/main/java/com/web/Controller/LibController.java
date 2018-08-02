@@ -49,6 +49,12 @@ public class LibController {
         return "login" ;
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request ,HttpServletResponse response) throws ServletException, IOException {
+        simpleAccountService.quitAccount(request,response);
+        return "logout" ;
+    }
+
     @RequestMapping(value = "/Library", method = RequestMethod.GET)
     public String printHello(HttpServletRequest request ,HttpServletResponse response) {
         simpleUserService.add(request);

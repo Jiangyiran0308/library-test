@@ -35,6 +35,7 @@ public class SimpleAccountService {
                     if(m != null) {
                         HttpSession session = request.getSession(true);
                         session.setAttribute("account", m);
+                        System.out.println(session.getAttribute("account")+"***accountAttribute");
                         String sessionId = session.getId();
                         Cookie cookie = new Cookie("JSESSIONID",sessionId);
                         cookie.setMaxAge(60 * 30);
@@ -52,10 +53,12 @@ public class SimpleAccountService {
                 }
                 else {
                     System.out.println("密码错误！");
+                   // request.setAttribute("passError",1);
                     return;
                 }
             else {
                 System.out.println("用户不存在!");
+              //  request.setAttribute("accountError",1);
                 return;
             }
 
@@ -63,13 +66,9 @@ public class SimpleAccountService {
     }
     public void quitAccount(HttpServletRequest request , HttpServletResponse response) throws IOException, ServletException {
         if(request != null){
-            String account = request.getParameter("quitAccount") ;
-            if(account !=null){
                 HttpSession session = request.getSession(false);
-                session.removeAttribute(account);
-                request.getRequestDispatcher("/login").forward(request, response);;
+                session.removeAttribute("account");
             }
-        }
     }
 
 

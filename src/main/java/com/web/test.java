@@ -1,5 +1,8 @@
 package com.web;
 
+import com.web.Dao.SimpleAccountDao;
+import com.web.Model.Account;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,7 +18,7 @@ import java.util.Properties;
  */
 public class test {
     public static void main (String []arg ){
-        try {
+   /*     try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
         }
         catch(ClassNotFoundException ex) {
@@ -55,7 +58,20 @@ public class test {
         }catch(SQLException | IOException  ignored){
             System.out.println(ignored);
             System.exit(1);
+        }*/
+
+        SimpleAccountDao simpleAccountDao = new SimpleAccountDao();
+
+        String name = "admin";
+        String pass = "123456" ;
+        Account account = simpleAccountDao.getAccountByName(name,pass);
+        if(account != null){
+            System.out.println(account.getId());
+            System.out.println(account.getName());
+            System.out.println(account.getPassword());
         }
+        else
+            System.out.println("用户名或密码错误！");
 
     }
 
