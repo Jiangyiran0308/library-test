@@ -35,7 +35,6 @@ public class SimpleAccountService {
                     if(m != null) {
                         HttpSession session = request.getSession(true);
                         session.setAttribute("account", m);
-                        System.out.println(session.getAttribute("account")+"***accountAttribute");
                         String sessionId = session.getId();
                         Cookie cookie = new Cookie("JSESSIONID",sessionId);
                         cookie.setMaxAge(60 * 30);
@@ -66,9 +65,15 @@ public class SimpleAccountService {
     }
     public void quitAccount(HttpServletRequest request , HttpServletResponse response) throws IOException, ServletException {
         if(request != null){
-                HttpSession session = request.getSession(false);
-                session.removeAttribute("account");
+            String logout = request.getParameter("logout") ;
+            if(logout != null ) {
+                if(logout.equals("1")) {
+                    HttpSession session = request.getSession(false);
+                    session.removeAttribute("account");
+                    System.out.println("******退出");
+                }
             }
+        }
     }
 
 

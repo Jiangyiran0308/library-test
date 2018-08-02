@@ -46,7 +46,7 @@ public class LibController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(HttpServletRequest request ,HttpServletResponse response) throws ServletException, IOException {
         simpleAccountService.selectAccount(request,response) ;
-        return "login" ;
+        return "login";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)

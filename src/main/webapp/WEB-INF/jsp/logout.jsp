@@ -26,7 +26,7 @@
 <script>
 
     setTimeout(function () {
-        window.location.href = "/logout" ;
+        window.location.href = "/login" ;
     },4000)
 
 </script>

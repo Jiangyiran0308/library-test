@@ -25,10 +25,9 @@ public class SessionFilter extends OncePerRequestFilter {
 
         if(!strUri.equals("/login")) {
             HttpSession session = request.getSession();
-            System.out.println(session.getId());
             Map account = (Map) session.getAttribute("account");
             if (account == null) {
-                System.out.println(String.valueOf(account));
+                //System.out.println(String.valueOf(account));
                 response.sendRedirect("/login");
             } else {
                 System.out.println(strUri);

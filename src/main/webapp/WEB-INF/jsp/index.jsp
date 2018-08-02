@@ -72,7 +72,7 @@
         系统
             <div style="float: right">
                 <span style="font-size: 18px;text-align: left"><%=name%></span>
-                <a href="/logout" style="color: #FFFFFF;background-color: #2A5FAB" onclick="quitAccount()">退出</a>
+                <button style="color: #FFFFFF;background-color: #2A5FAB" onclick="log_out()">退出</button>
             </div>
         </div>
         <iframe id="menu" width="95%" height="93%" frameborder="0" src="./Library"></iframe>
@@ -99,6 +99,10 @@
     }
     function choose3() {
         document.getElementById("menu").src = "./AllRelation"
+    }
+
+    function log_out() {
+        window.location.href = "/logout?logout=1" ;
     }
 
 
