@@ -1,7 +1,6 @@
 package com.web.Dao;
 
 import com.web.Model.Account;
-import org.apache.ibatis.jdbc.SQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
