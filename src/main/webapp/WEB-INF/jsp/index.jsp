@@ -1,4 +1,5 @@
-<%@ page import="java.util.Map" %><%--
+<%@ page import="java.util.Map" %>
+<%@ page import="com.web.Model.Account" %><%--
   Created by IntelliJ IDEA.
   User: Jiang
   Date: 2018/7/18
@@ -10,10 +11,9 @@
     HttpSession session1 = request.getSession() ;
     String name = null;
     if(session1 != null) {
-        Map<String, String> account = (Map) session1.getAttribute("account");
+        Account account = (Account) session1.getAttribute("account");
         if(account != null) {
-            for (String key : account.keySet())
-                name = key;
+            name = account.getName() ;
         }
         else
             name = "无";

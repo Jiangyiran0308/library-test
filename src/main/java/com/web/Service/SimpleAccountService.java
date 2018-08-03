@@ -27,16 +27,16 @@ public class SimpleAccountService {
 
         String name = request.getParameter("admin") ;
         String pass = request.getParameter("password") ;
-        Map account = new HashMap() ;
-        String accountName = "admin" ;
-        String accountPass = "123456" ;
+        //Map account = new HashMap() ;
+        //String accountName = "admin" ;
+        //String accountPass = "123456" ;
         if(name != null && pass != null) {
             //System.out.println(name + "***" + pass);
-            //Account account = AccountDao.selectAccount(name,pass) ;
-            account.put(accountName,accountPass) ;
-            if (name.equals(accountName) && pass.equals(accountPass)) {
-               // System.out.println("******账号："+account.getName()+"登录成功！******");
-                //if (name.equals(account.getName()) && pass.equals(account.getPassword())) {
+            Account account = AccountDao.selectAccount(name,pass) ;
+            //account.put(accountName,accountPass) ;
+            if (account != null /*name.equals(accountName) && pass.equals(accountPass)*/) {
+                System.out.println("******账号："+account.getName()+"登录成功！******");
+                if (name.equals(account.getName()) && pass.equals(account.getPassword())) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("account", account);
                     String sessionId = session.getId();
@@ -54,7 +54,7 @@ public class SimpleAccountService {
                         request.getRequestDispatcher("/").forward(request, response);
                         return;
                     }
-               // }
+                }
             }
             else {
                     System.out.println("用户名或密码错误！");

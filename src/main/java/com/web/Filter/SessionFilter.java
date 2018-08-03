@@ -1,5 +1,6 @@
 package com.web.Filter;
 
+import com.web.Model.Account;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -20,12 +21,10 @@ public class SessionFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        System.out.println("====测试Filter功能====拦截用户登陆====");
         String strUri = request.getRequestURI() ;
-
         if(!strUri.equals("/login")) {
             HttpSession session = request.getSession();
-            Map account = (Map) session.getAttribute("account");
+            Account account = (Account) session.getAttribute("account");
             if (account == null) {
                 //System.out.println(String.valueOf(account));
                 response.sendRedirect("/login");

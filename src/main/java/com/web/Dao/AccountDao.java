@@ -12,7 +12,6 @@ public class AccountDao {
     private static DBCPUtil dbcpUtil = new DBCPUtil() ;
 
     public static Account selectAccount(String name , String pass) {
-        System.out.println("开始查询！");
         Account account = null ;
         Connection connection = dbcpUtil.getConn() ;
         if(connection != null) {
@@ -26,7 +25,6 @@ public class AccountDao {
                 String accountName = null;
                 String accountPass = null;
                 ResultSet rs = ps.executeQuery();
-                System.out.println("查询成功！");
                 while (rs.next()) {
                     accountId = rs.getString("id");
                     accountName = rs.getString("name");

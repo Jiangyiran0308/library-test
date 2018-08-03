@@ -16,7 +16,8 @@ import java.util.Properties;
 public class DBCPUtil {
 
     private static DataSource ds ;
-    private static final String configFile = "src/main/resources/properties/dbcp.properties" ;
+    //private static final String configFile = "src/main/resources/properties/dbcp.properties" ;
+    private static final String configFile = "F:\\My document\\Java_study\\librarytest\\src\\main\\resources\\properties\\dbcp.properties" ;
 
     public DBCPUtil(){
         Properties pro = new Properties() ;
@@ -24,11 +25,9 @@ public class DBCPUtil {
 
         try {
             FileInputStream config = new FileInputStream(configFile);
-            //FileInputStream input = new FileInputStream(configFile);
-           // System.out.println(input);
-           // pro.load(input);
-            //System.out.println(pro);
+           // InputStream config = this.getClass().getClassLoader().getSystemResourceAsStream("dbcp.properties");
             if (config != null) {
+                System.out.println("读取配置文件成功*****");
                 pro.load(config);
                 System.out.println(pro);
                 ds = BasicDataSourceFactory.createDataSource(pro);
