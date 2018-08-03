@@ -19,6 +19,18 @@ import java.util.Properties;
  */
 public class test {
     public static void main (String []arg ){
+        String name = "admin";
+        String pass = "123456" ;
+
+        Account account = AccountDao.selectAccount(name, pass);
+        if(account != null){
+            System.out.println(account.getId());
+            System.out.println(account.getName());
+            System.out.println(account.getPassword());
+        }
+        else
+            System.out.println("用户名或密码错误！");
+
        /* try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
         }
@@ -61,17 +73,7 @@ public class test {
             System.exit(1);
         }*/
 
-        String name = "admin";
-        String pass = "123456" ;
 
-        Account account = AccountDao.selectAccount(name, pass);
-        if(account != null){
-            System.out.println(account.getId());
-            System.out.println(account.getName());
-            System.out.println(account.getPassword());
-        }
-        else
-            System.out.println("用户名或密码错误！");
 
     }
 

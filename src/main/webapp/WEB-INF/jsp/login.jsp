@@ -63,11 +63,15 @@
             </div>
             <form method="get" id="log_in">
                 <div class="input-group input-group-lg" style="padding-bottom: 40px">
-                    <span class="input-group-addon" id="basic-addon1" style="width: 110px"> 用户名：</span>
+                    <span class="input-group-addon" id="basic-addon1" style="width: 50px">
+                        <span class="glyphicon glyphicon-user"></span>
+                    </span>
                     <input type="text" name="admin" class="form-control"  aria-describedby="sizing-addon1">
                 </div>
                 <div class="input-group input-group-lg" style="padding-bottom: 40px">
-                    <span class="input-group-addon" id="basic-addon2" style="width: 110px"> 密码：</span>
+                    <span class="input-group-addon" id="basic-addon2" style="width: 50px">
+                        <span class="glyphicon glyphicon-lock"></span>
+                    </span>
                     <input type="text" name="password" class="form-control"  aria-describedby="sizing-addon1">
                 </div>
                 <div id="loading" class="loginbtn" onclick="fo_sunbimt()">
