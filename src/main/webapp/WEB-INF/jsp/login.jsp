@@ -26,7 +26,7 @@
             background-color: #FFFFFF;
             border-radius: 15px;
             height: 390px;
-            width: 420px;
+            width: 370px;
             padding: 30px;
             margin: auto;
             top: 0;
@@ -37,7 +37,7 @@
 
         .loginbtn{
             background-color: #3795FF;
-            width:360px;
+            width:310px;
             height: 50px;
             text-align: center;
             color: #FFFFFF;
