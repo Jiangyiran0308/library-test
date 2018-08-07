@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
  public class SimpleDataService implements DataService {
@@ -21,6 +23,10 @@ import java.util.List;
  public List<Libbook> allBook = io.readAllBookInfo() ;
 
  public List<UserBookRelation> allRelation = io.readAllRelation();
+
+ public Map<String,Libuser> userIndex = new HashMap<>();
+
+ public Map<String,Libbook> bookIndex = new HashMap<>();
 
 
 
@@ -220,6 +226,27 @@ import java.util.List;
    }
   }
 
+ }
+
+ public void LibuserIndex(){
+  System.out.println("正在加载索引*****");
+  if(allUser != null && allUser.size() > 0){
+   for(Libuser user : allUser){
+    userIndex.put(user.getId(),user);
+   }
+   System.out.println("加载完成****");
+  }
+
+ }
+
+ public void LibbooksIndex(){
+  System.out.println("正在加载索引*****");
+  if(allBook != null && allBook.size() > 0){
+   for(Libbook book : allBook){
+    bookIndex.put(book.getIsbn(),book);
+   }
+   System.out.println("加载完成****");
+  }
  }
 
 

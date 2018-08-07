@@ -75,6 +75,13 @@ public class SimpleBookService implements BookService{
     public Libbook searchByIDorName(HttpServletRequest userinfo){
         String isbn = userinfo.getParameter("searchUserByIsbn") ;
         String name = userinfo.getParameter("searchUserByName") ;
+
+        if(isbn != null){
+            Libbook book = simpleDataService.bookIndex.get(isbn) ;
+            if(book != null)
+                return book ;
+        }
+
         Libbook bookByIsbn = simpleDataService.searchBookByISBN(isbn) ;
         Libbook bookByName = simpleDataService.searchBookByName(name) ;
         if(bookByIsbn == null && bookByName != null ) {

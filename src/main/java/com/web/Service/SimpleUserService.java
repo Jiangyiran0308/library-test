@@ -68,6 +68,14 @@ public class SimpleUserService implements UserService{
     public Libuser searchByIDorName(HttpServletRequest userinfo){
         String id = userinfo.getParameter("searchUserById");
         String name = userinfo.getParameter("searchUserByName") ;
+
+        if(id != null ){
+            Libuser user = simpleDataService.userIndex.get(id) ;
+            if(user != null)
+                return user ;
+        }
+
+
         Libuser userById = simpleDataService.searchUserById(id) ;
         Libuser userByName = simpleDataService.searchUserByUserName(name) ;
 
