@@ -70,9 +70,12 @@ public class SimpleUserService implements UserService{
         String name = userinfo.getParameter("searchUserByName") ;
 
         if(id != null ){
-            Libuser user = simpleDataService.userIndex.get(id) ;
-            if(user != null)
-                return user ;
+            System.out.println(SimpleDataService.userIndex);
+            Libuser user = SimpleDataService.userIndex.get(id) ;
+            if(user != null) {
+                System.out.println("通过索引查询成功！*******");
+                return user;
+            }
         }
 
 

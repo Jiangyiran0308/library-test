@@ -36,6 +36,21 @@ public class SimpleRelationService implements RelationService {
         String userid = relation.getParameter("searchRelationUserId") ;
         if(userid != null) {
             Libuser user = simpleDataService.searchUserById(userid);
+
+            /*索引查询借书关系*/
+            List<String> allbook = SimpleDataService.relationIndex.get(userid) ;
+            if(allbook != null){
+                List<Libbook> books = new ArrayList<>();
+                for(String isbn : allbook) {
+                    books.add(SimpleDataService.bookIndex.get(isbn) );
+                }
+                System.out.println("通过索引查询关系成功！*******");
+                if(!books.isEmpty())
+                    return (new UserAllBook(user,books));
+            }
+
+
+
             List<String> allIsbn = simpleDataService.searchUserBookRelationById(userid);
             if(user != null && allIsbn != null) {
                 List<Libbook> userAllBook = new ArrayList<Libbook>();

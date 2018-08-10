@@ -1,12 +1,9 @@
 package com.web.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-public class InitListenerSevice implements ServletContextListener{
+public class InitListenerSevice implements ServletContextListener {
 
 
     private SimpleDataService simpleDataService = new SimpleDataService();
@@ -22,6 +19,8 @@ public class InitListenerSevice implements ServletContextListener{
         System.out.println("================>[ServletContextListener]自动加载启动开始.");
         simpleDataService.LibuserIndex();
         simpleDataService.LibbooksIndex();
+        simpleDataService.RelationIndex();
+        simpleDataService.searchBookByNameAuthorIndex();
 
     }
 

@@ -77,9 +77,11 @@ public class SimpleBookService implements BookService{
         String name = userinfo.getParameter("searchUserByName") ;
 
         if(isbn != null){
-            Libbook book = simpleDataService.bookIndex.get(isbn) ;
-            if(book != null)
-                return book ;
+            Libbook book = SimpleDataService.bookIndex.get(isbn) ;
+            if(book != null) {
+                System.out.println("通过索引查询成功！*******");
+                return book;
+            }
         }
 
         Libbook bookByIsbn = simpleDataService.searchBookByISBN(isbn) ;

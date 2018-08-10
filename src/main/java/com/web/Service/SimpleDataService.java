@@ -24,9 +24,14 @@ import java.util.Map;
 
  public List<UserBookRelation> allRelation = io.readAllRelation();
 
- public Map<String,Libuser> userIndex = new HashMap<>();
+ public static Map<String,Libuser> userIndex = new HashMap<>();
 
- public Map<String,Libbook> bookIndex = new HashMap<>();
+ public static Map<String,Libbook> bookIndex = new HashMap<>();
+
+ public static Map<String,List<String>> relationIndex = new HashMap<>() ;
+
+ public static Map<String,Map<String,Libbook>> searchBookByNameAuthorIndex = new HashMap<>() ;//联合索引，通过书名和作者查找书籍
+
 
 
 
@@ -246,6 +251,43 @@ import java.util.Map;
     bookIndex.put(book.getIsbn(),book);
    }
    System.out.println("加载完成****");
+  }
+ }
+
+ public void RelationIndex(){
+  System.out.println("正在加载索引*****");
+  if(allRelation != null && allRelation.size() > 0){
+   for(UserBookRelation relation : allRelation){
+    relationIndex.put(relation.getUserid(),searchUserBookRelationById(relation.getUserid())) ;
+   }
+   System.out.println("加载完成****");
+   System.out.println(relationIndex);
+  }
+ }
+
+ public void searchBookByNameAuthorIndex(){
+  System.out.println("正在加载联合索引*****");
+  if(allBook != null){
+   for( Libbook book : allBook ){
+    Map<String,Libbook> m = new HashMap<>();
+    m.put(book.getAuthor(),book) ;
+    searchBookByNameAuthorIndex.put(book.getName(),m) ;
+   }
+   System.out.println("加载完成****");
+   System.out.println(searchBookByNameAuthorIndex);
+
+//   String name = "Java";
+//   String author = "Max";
+//   Map m = searchBookByNameAuthorIndex ;
+//   if(m != null) {
+//    Map book1 = (Map) m.get(name);
+//    if(book1 != null){
+//     Libbook book = (Libbook) book1.get(author);
+//     if(book != null){
+//      System.out.println(book.getIsbn()+"********");
+//     }
+//    }
+//   }
   }
  }
 
