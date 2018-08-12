@@ -1,9 +1,13 @@
 package com.web.Dao;
 
 import javax.sql.DataSource;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -29,25 +33,32 @@ public class MyConnectionPool implements DataSource{
     private static String password ;
     private static int InitSize ;
     private static int maxActive ;
+    private static int increase ;
+    private static long maxWait ;
 
-    private static int max = 0 ;
+    private static int poolSize = 0 ;
     private static List<Connection> allConnextion = new LinkedList<Connection>();
 
 
     static {
         Properties pro = new Properties() ;
         try {
-            //FileInputStream config = new FileInputStream(configFile);
-            InputStream config=MyConnectionPool.class.getResourceAsStream("/dbcp.properties");
+            FileInputStream config = new FileInputStream(configFile);
+            //InputStream config=MyConnectionPool.class.getResourceAsStream("/dbcp.properties");
             if (config != null) {
                 pro.load(config);
-                System.out.println(pro);
+                //System.out.println(pro);
                 driver = pro.getProperty("driverClassName") ;
                 url = pro.getProperty("url") ;
                 username = pro.getProperty("username") ;
                 password = pro.getProperty("password") ;
                 InitSize = Integer.parseInt(pro.getProperty("initialSize")) ;
+
+                poolSize = InitSize ;
+
                 maxActive = Integer.parseInt(pro.getProperty("maxActive")) ;
+                maxWait = Long.parseLong(pro.getProperty("maxWait")) ;
+                increase = Integer.parseInt(pro.getProperty("increase")) ;
 
                 Class.forName(driver) ;
 
@@ -63,26 +74,55 @@ public class MyConnectionPool implements DataSource{
 
     @Override
     public Connection getConnection() throws SQLException {
-        if(allConnextion.size() == 0 && max < ((maxActive-InitSize)/5)) {
-            for (int i = 0; i < 5; i++) {
-                Connection conn = DriverManager.getConnection(url, username, password);
-                allConnextion.add(conn);
+        if(allConnextion.size() == 0 && poolSize < maxActive) {
+            synchronized(this) {
+                if (maxActive - poolSize < increase)
+                    increase = maxActive - poolSize;
+                for (int i = 0; i < increase; i++) {
+                    Connection conn = DriverManager.getConnection(url, username, password);
+                    allConnextion.add(conn);
+                }
+                poolSize += increase;
+                System.out.println("********连接池的大小为：" + poolSize + "******最大为：" + maxActive);
             }
-            max++ ;
         }
-        if(allConnextion.size() > 0 ){
-            Connection conn = allConnextion.get(0) ;
-            allConnextion.remove(0) ;
+
+        long time =  System.currentTimeMillis();
+        long wait1 = 0;
+        while(allConnextion.size() == 0 && System.currentTimeMillis() < (time + maxWait))
+            wait1 = System.currentTimeMillis();
+
+        if(wait1 != 0)
+            wait1 = wait1-time ;
+        System.out.println("********等待了 "+wait1+" ms********");
+
+        synchronized (this) {
+            if (allConnextion.size() > 0) {
+
+                final Connection conn = allConnextion.get(0);
+                allConnextion.remove(0);
+
+                return (Connection) Proxy.newProxyInstance(conn.getClass().getClassLoader(),
+                        new Class[]{Connection.class}, new InvocationHandler() {
+                            @Override
+                            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                                if (!method.getName().equals("close")) {
+                                    return method.invoke(conn, args);
+                                } else {
+                                    //如果调用的是Connection对象的close方法，就把conn还给数据库连接池
+                                    allConnextion.add(conn);
+                                    System.out.println("Connections数据库连接池大小为" + allConnextion.size());
+                                    return null;
+                                }
+                            }
+                        });
+            }
         }
+        System.out.println("********连接超时*********");
         return null ;
-    }
-
-    /**
-     * 归还连接对象到连接池中去
-     */
-    public void backConnection(Connection conn){
 
     }
+
 
     @Override
     public PrintWriter getLogWriter() throws SQLException {

@@ -2,14 +2,17 @@ package com.web;
 
 import com.web.Dao.AccountDao;
 import com.web.Dao.DBCPUtil;
+import com.web.Dao.MyjdbcUtil;
 import com.web.Model.Account;
 
+import javax.swing.plaf.nimbus.State;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.math.*;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @Author: Jiang
@@ -18,18 +21,73 @@ import java.util.Properties;
  * @Modified By:
  */
 public class test {
-    public static void main (String []arg ){
-        String name = "admin";
-        String pass = "123456" ;
 
-        Account account = AccountDao.selectAccount(name, pass);
-        if(account != null){
-            System.out.println(account.getId());
-            System.out.println(account.getName());
-            System.out.println(account.getPassword());
+    private static int threadcount = 30 ;
+
+    private final static CountDownLatch COUNT_DOWN_LATCH = new CountDownLatch(threadcount);
+
+    private static int i = 0 ;
+
+    public static void ConnectionTest(){
+
+        try {
+            Connection conn = MyjdbcUtil.getconnection() ;
+            if(conn != null) {
+                Statement st = conn.createStatement();
+                String sql = "SELECT * FROM account_info";
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    System.out.println(rs.getString("name"));
+                    System.out.println(rs.getString("password"));
+                }
+                MyjdbcUtil.close(rs, st, conn);
+            }else{
+                System.out.println("********请求失败*******");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        else
-            System.out.println("用户名或密码错误！");
+
+    }
+
+    public static void main (String []arg ){
+
+
+        for(i = 0 ; i < threadcount ; i++ ){
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int i = 0 ;
+                    while (i < 10 ){
+                        i ++ ;
+                        try{
+                            COUNT_DOWN_LATCH.countDown();//每次减一
+                            COUNT_DOWN_LATCH.await();
+                            ConnectionTest();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
+
+        }
+        while (true)
+             ;
+
+
+//        String name = "admin";
+//        String pass = "123456" ;
+//
+//        Account account = AccountDao.selectAccount(name, pass);
+//        if(account != null){
+//            System.out.println(account.getId());
+//            System.out.println(account.getName());
+//            System.out.println(account.getPassword());
+//        }
+//        else
+//            System.out.println("用户名或密码错误！");
 
        /* try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
