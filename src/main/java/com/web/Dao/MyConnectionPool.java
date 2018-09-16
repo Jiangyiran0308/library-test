@@ -35,9 +35,10 @@ public class MyConnectionPool implements DataSource{
     private static int maxActive ;
     private static int increase ;
     private static long maxWait ;
+    private static int waitTime ;
 
     private static int poolSize = 0 ;
-    private static List<Connection> allConnextion = new LinkedList<Connection>();
+    private static LinkedList<Connection> allConnextion = new LinkedList<Connection>();
 
 
     static {
@@ -58,6 +59,7 @@ public class MyConnectionPool implements DataSource{
 
                 maxActive = Integer.parseInt(pro.getProperty("maxActive")) ;
                 maxWait = Long.parseLong(pro.getProperty("maxWait")) ;
+                waitTime = Integer.parseInt(pro.getProperty("waitTime"));
                 increase = Integer.parseInt(pro.getProperty("increase")) ;
 
                 Class.forName(driver) ;
@@ -76,51 +78,112 @@ public class MyConnectionPool implements DataSource{
     public Connection getConnection() throws SQLException {
         if(allConnextion.size() == 0 && poolSize < maxActive) {
             synchronized(this) {
-                if (maxActive - poolSize < increase)
-                    increase = maxActive - poolSize;
-                for (int i = 0; i < increase; i++) {
-                    Connection conn = DriverManager.getConnection(url, username, password);
-                    allConnextion.add(conn);
+                if(allConnextion.size() == 0 && poolSize < maxActive) {
+                    if (maxActive - poolSize < increase)
+                        increase = maxActive - poolSize;
+                    for (int i = 0; i < increase; i++) {
+                        Connection conn = DriverManager.getConnection(url, username, password);
+                        allConnextion.add(conn);
+                    }
+                    poolSize += increase;
+                    System.out.println("********连接池的大小为：" + poolSize + "******最大为：" + maxActive);
                 }
-                poolSize += increase;
-                System.out.println("********连接池的大小为：" + poolSize + "******最大为：" + maxActive);
             }
         }
 
-        long time =  System.currentTimeMillis();
-        long wait1 = 0;
-        while(allConnextion.size() == 0 && System.currentTimeMillis() < (time + maxWait))
-            wait1 = System.currentTimeMillis();
+        synchronized (this){
 
-        if(wait1 != 0)
-            wait1 = wait1-time ;
-        System.out.println("********等待了 "+wait1+" ms********");
+            long time = 0 ;
+            if(allConnextion.size() == 0) {
+                while (allConnextion.size() == 0 && time < maxWait) {
+                    try {
+                        long wait = 1;
+                        time += wait;
+                        if (time > maxWait) {
+                            wait = maxWait - time;
+                            time = maxWait;
 
-        synchronized (this) {
-            if (allConnextion.size() > 0) {
+                        }
+                        this.wait(wait);
 
-                final Connection conn = allConnextion.get(0);
-                allConnextion.remove(0);
+                        if(allConnextion.size() != 0){
+                            System.out.println("********等待了 "+time+" ms********");
+                            return returnConnection() ;
+                        }
 
-                return (Connection) Proxy.newProxyInstance(conn.getClass().getClassLoader(),
-                        new Class[]{Connection.class}, new InvocationHandler() {
-                            @Override
-                            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                                if (!method.getName().equals("close")) {
-                                    return method.invoke(conn, args);
-                                } else {
-                                    //如果调用的是Connection对象的close方法，就把conn还给数据库连接池
-                                    allConnextion.add(conn);
-                                    System.out.println("Connections数据库连接池大小为" + allConnextion.size());
-                                    return null;
-                                }
-                            }
-                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
+            else{
+                System.out.println("********没有等待********");
+                return returnConnection() ;
+            }
+
+
         }
+
+//        if (allConnextion.size() > 0) {
+//        synchronized (this) {
+//
+//            if (allConnextion.size() > 0) {
+//
+//                final Connection conn = allConnextion.get(0);
+//                allConnextion.remove(0);
+//
+//                return (Connection) Proxy.newProxyInstance(conn.getClass().getClassLoader(),
+//                        new Class[]{Connection.class}, new InvocationHandler() {
+//                            @Override
+//                            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+//                                if (!method.getName().equals("close")) {
+//                                    return method.invoke(conn, args);
+//                                } else {
+//                                    //如果调用的是Connection对象的close方法，就把conn还给数据库连接池
+//                                    allConnextion.add(conn);
+//                                    System.out.println("Connections数据库连接池大小为" + allConnextion.size());
+//                                    return null;
+//                                }
+//                            }
+//                        });
+//            }
+//        }
+//        }
         System.out.println("********连接超时*********");
         return null ;
+    }
 
+    private Connection returnConnection(){
+        synchronized (this) {
+            if (getAllConnextion().size() > 0) {
+                if (getAllConnextion().size() > 0) {
+                    final Connection conn = allConnextion.removeFirst();
+//                    allConnextion.removeFirst();
+//                    allConnextion.remove(0);
+
+                    return (Connection) Proxy.newProxyInstance(conn.getClass().getClassLoader(),
+                            new Class[]{Connection.class}, new InvocationHandler() {
+                                @Override
+                                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                                    if (!method.getName().equals("close")) {
+                                        return method.invoke(conn, args);
+                                    } else {
+                                        //如果调用的是Connection对象的close方法，就把conn还给数据库连接池
+                                        allConnextion.add(conn);
+                                        System.out.println("Connections数据库连接池大小为" + allConnextion.size());
+                                        return null;
+                                    }
+                                }
+                            });
+                }
+            }
+            return null ;
+        }
+    }
+
+    private synchronized List<Connection> getAllConnextion(){
+        return allConnextion ;
     }
 
 

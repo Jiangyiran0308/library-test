@@ -22,7 +22,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public class test {
 
-    private static int threadcount = 30 ;
+    private static int threadcount = 1000 ;
 
     private final static CountDownLatch COUNT_DOWN_LATCH = new CountDownLatch(threadcount);
 
@@ -36,10 +36,10 @@ public class test {
                 Statement st = conn.createStatement();
                 String sql = "SELECT * FROM account_info";
                 ResultSet rs = st.executeQuery(sql);
-                while (rs.next()) {
-                    System.out.println(rs.getString("name"));
-                    System.out.println(rs.getString("password"));
-                }
+//                while (rs.next()) {
+//                    System.out.println(rs.getString("name"));
+//                    System.out.println(rs.getString("password"));
+//                }
                 MyjdbcUtil.close(rs, st, conn);
             }else{
                 System.out.println("********请求失败*******");
